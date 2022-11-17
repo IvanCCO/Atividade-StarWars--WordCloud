@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from nltk import FreqDist
 from deep_translator import GoogleTranslator
 from monkeylearn import MonkeyLearn
+import os
+from time import sleep
 
 positivos = 0
 negativos = 0
@@ -20,25 +22,31 @@ def importarArquivos(listaArquivos):
     
     return frases
 
-texto = importarArquivos(["./Documentos/episodioIVThreepio.csv", "./Documentos/episodioVThreepio.csv", "./Documentos/episodioVIThreepio.csv"])
+texto = importarArquivos(["./Documentos/episodioIVThreepio.csv"])
 
+contador = 0
 for x in texto:
+    contador += 1
+    if contador == 9:
+        os.system('clear')
+        contador = 0
+
     translated = GoogleTranslator(source='auto', target='en').translate(x)
 
-    ml = MonkeyLearn('d76ff41fc801fe7b756112f46acaec550f93a468')
+    ml = MonkeyLearn('8bcdb9e1b53ec19c7deffc5d712cd126430047f7')
     data = [translated]
-    model_id = 'cl_pi3C7JiL'
+    model_id = 'cl_NDBChtr7'
     result = ml.classifiers.classify(model_id, data)
     print(result.body)
+
     if (result.body[0]['classifications'][0]['tag_name'] == 'Positive'):
         positivos += 1
-        positivos += result.body[0]['classifications'][0]['confidence']
+        positivos += float(result.body[0]['classifications'][0]['confidence'])
     else:
         negativos += 1
-        negativos += result.body[0]['classifications'][0]['confidence']
+        negativos += float(result.body[0]['classifications'][0]['confidence'])
 
-print(100 * '-')
-print('Programa finalizado')
-print(f'Positivos: {positivos}')
-print(f'Negativos: {negativos}')
-print(100 * '-')
+    print(100 * '-')
+    print(f'Positivos: {positivos}')
+    print(f'Negativos: {negativos}')
+    print(100 * '-')

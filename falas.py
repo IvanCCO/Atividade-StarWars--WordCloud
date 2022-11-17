@@ -20,8 +20,8 @@ def importarArquivos(listaArquivos):
 
     return texto
 
-# Verifica as top 10 palavras mais utilizadas no texto
-# Retorna uma lista das 10 palavras
+# Verifica as top 30 palavras mais utilizadas no texto
+# Retorna uma lista das 30 palavras
 def topPalavras(texto):
     for letra in texto:
         if letra in [',', '!', '_', ';', '.', '"', '[', ']',':', '-']:
